@@ -1,0 +1,25 @@
+# Core libraries
+pandas==2.1.4
+numpy==1.25.2
+scikit-learn==1.3.2
+
+# Text processing
+nltk==3.8.1
+
+# Visualization
+matplotlib==3.8.2
+plotly==5.17.0
+seaborn==0.13.0
+
+# Web app
+streamlit==1.28.2
+
+# Time series forecasting
+prophet==1.1.5
+
+# Fake data generation (para PoC)
+faker==20.1.0
+
+# Additional utilities
+wordcloud==1.9.2
+textblob==0.17.1
