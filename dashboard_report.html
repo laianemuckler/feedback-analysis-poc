@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Análise de Feedbacks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .section-header h2 {
+            color: #495057;
+            font-size: 1.5em;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .theme-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .theme-item:last-child {
+            border-bottom: none;
+        }
+        
+        .theme-info {
+            flex: 1;
+        }
+        
+        .theme-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .theme-stats {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .priority-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .priority-badge.critical {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .priority-badge.high {
+            background-color: #fd7e14;
+            color: white;
+        }
+        
+        .priority-badge.medium {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .priority-badge.low {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .examples {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .examples h4 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        
+        .example-item {
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .segment-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .segment-name {
+            min-width: 120px;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+        }
+        
+        .segment-value {
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .recommendations {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .recommendations h2 {
+            margin-bottom: 20px;
+        }
+        
+        .recommendation-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            border-left: 4px solid white;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Dashboard - Análise de Feedbacks</h1>
+            <p class="subtitle">Relatório Executivo | Período: 01/04/2025 - 27/09/2025</p>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">800</div>
+                <div class="metric-label">Total de Feedbacks</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">10</div>
+                <div class="metric-label">Temas Identificados</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1</div>
+                <div class="metric-label">Prioridade Crítica</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">70.2%</div>
+                <div class="metric-label">Melhor Satisfação</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2>🎯 Temas por Prioridade</h2>
+            </div>
+            <div class="section-content">
+
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Logística e Entrega</div>
+                        <div class="theme-stats">
+                            370 feedbacks • 46.2% do total • 54.3% negativos
+                        </div>
+                        
+                <div class="examples">
+                    <h4>Exemplos de feedback:</h4>
+                    <div class="example-item">• Preço caro demais para qualidade do gloss</div><div class="example-item">• O creme facial ressecou muito minha pele, horrível</div>
+                </div>
+                
+                    </div>
+                    <div class="priority-badge critical">🚨 Crítica</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Tamanho e Ajuste</div>
+                        <div class="theme-stats">
+                            70 feedbacks • 8.8% do total • 25.7% negativos
+                        </div>
+                        
+                <div class="examples">
+                    <h4>Exemplos de feedback:</h4>
+                    <div class="example-item">• Tamanho da camiseta não confere com tabela</div><div class="example-item">• Tamanho da moletom não confere com tabela</div>
+                </div>
+                
+                    </div>
+                    <div class="priority-badge high">⚠️ Alta</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Aparência e Design</div>
+                        <div class="theme-stats">
+                            93 feedbacks • 11.6% do total • 18.3% negativos
+                        </div>
+                        
+                <div class="examples">
+                    <h4>Exemplos de feedback:</h4>
+                    <div class="example-item">• Cor do shampoo não combinou, muito diferente da foto</div><div class="example-item">• Cor do protetor solar não combinou, muito diferente da foto</div>
+                </div>
+                
+                    </div>
+                    <div class="priority-badge medium">📊 Média</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Material e Conforto</div>
+                        <div class="theme-stats">
+                            40 feedbacks • 5.0% do total • 20.0% negativos
+                        </div>
+                        
+                <div class="examples">
+                    <h4>Exemplos de feedback:</h4>
+                    <div class="example-item">• Tecido da cinto é muito fino, transparente</div><div class="example-item">• Tecido da pijama é muito fino, transparente</div>
+                </div>
+                
+                    </div>
+                    <div class="priority-badge medium">📊 Média</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Excelência e Qualidade</div>
+                        <div class="theme-stats">
+                            56 feedbacks • 7.0% do total • 1.8% negativos
+                        </div>
+                        
+                <div class="examples">
+                    <h4>Exemplos de feedback:</h4>
+                    <div class="example-item">• Bateria do TV dura muito pouco, decepcionante</div>
+                </div>
+                
+                    </div>
+                    <div class="priority-badge low">✅ Baixa</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Custo-Benefício Premium</div>
+                        <div class="theme-stats">
+                            56 feedbacks • 7.0% do total • 0.0% negativos
+                        </div>
+                        
+                    </div>
+                    <div class="priority-badge low">✅ Baixa</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Satisfação e Elogios</div>
+                        <div class="theme-stats">
+                            39 feedbacks • 4.9% do total • 0.0% negativos
+                        </div>
+                        
+                    </div>
+                    <div class="priority-badge low">✅ Baixa</div>
+                </div>
+            
+                <div class="theme-item">
+                    <div class="theme-info">
+                        <div class="theme-name">Durabilidade</div>
+                        <div class="theme-stats">
+                            28 feedbacks • 3.5% do total • 0.0% negativos
+                        </div>
+                        
+                    </div>
+                    <div class="priority-badge low">✅ Baixa</div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">
+                <h2>📈 Performance por Segmento</h2>
+            </div>
+            <div class="section-content">
+
+                <div class="segment-bar">
+                    <div class="segment-name">Roupas</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70.18867924528301%"></div>
+                    </div>
+                    <div class="segment-value">70.2%</div>
+                </div>
+            
+                <div class="segment-bar">
+                    <div class="segment-name">Eletronicos</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 69.10569105691057%"></div>
+                    </div>
+                    <div class="segment-value">69.1%</div>
+                </div>
+            
+                <div class="segment-bar">
+                    <div class="segment-name">Beleza</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 68.85813148788927%"></div>
+                    </div>
+                    <div class="segment-value">68.9%</div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="recommendations">
+            <h2>💡 Recomendações Estratégicas</h2>
+
+            <div class="recommendation-item">
+                <strong>🚨 AÇÃO IMEDIATA:</strong> Focar em Logística e Entrega 
+                (370 feedbacks, 54.3% negativos)
+            </div>
+            
+            <div class="recommendation-item">
+                <strong>📈 PRÓXIMAS AÇÕES:</strong> Melhorar Tamanho e Ajuste
+            </div>
+            
+            <div class="recommendation-item">
+                <strong>🎯 BENCHMARKING:</strong> Usar estratégia de Roupas 
+                (70.2% satisfação) para melhorar Beleza 
+                (68.9% satisfação)
+            </div>
+            
+            <div class="recommendation-item">
+                <strong>💰 IMPACTO ESTIMADO:</strong> Resolução dos temas críticos pode reduzir 
+                201 feedbacks negativos/mês
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Relatório gerado automaticamente em 28/09/2025 às 21:33</p>
+            <p>Sistema de Análise de Feedbacks - PoC | Desenvolvido com ajuda de IA</p>
+        </div>
+    </div>
+</body>
+</html>
+        
