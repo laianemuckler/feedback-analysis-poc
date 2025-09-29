@@ -1,5 +1,3 @@
-# feedback-analysis-poc
-
 # 🧠 Feedback Analysis POC
 
 Este projeto é uma **Prova de Conceito (POC)** de análise de feedbacks utilizando **clustering temático**.
